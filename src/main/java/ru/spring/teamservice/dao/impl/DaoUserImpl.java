@@ -99,7 +99,7 @@ public class DaoUserImpl implements DaoUser {
                 "on usr.group_fk = gr.g_id\n" +
                 "WHERE telegram_id = ?;";
         try {
-            return Optional.of(jdbcTemplate.queryForObject(sql, new Object[]{telegramId}, userRowMapper));
+            return Optional.of(jdbcTemplate.queryForObject(sql, new Object[]{Long.parseLong(telegramId)}, userRowMapper));
         } catch (Exception e) {
             return Optional.empty();
         }
