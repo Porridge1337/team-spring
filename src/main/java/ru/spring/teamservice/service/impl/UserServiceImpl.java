@@ -2,6 +2,7 @@ package ru.spring.teamservice.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.spring.teamservice.dao.DaoUser;
 import ru.spring.teamservice.model.User;
 import ru.spring.teamservice.service.UserService;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
     private final DaoUser daoUser;
@@ -50,16 +52,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean save(User user) {
         return daoUser.save(user);
     }
 
     @Override
+    @Transactional
     public boolean update(User user, int id) {
         return daoUser.update(user, id);
     }
 
     @Override
+    @Transactional
     public boolean deleteUserById(int id) {
         return daoUser.deleteUserById(id);
     }
