@@ -91,7 +91,7 @@ public class DaoUserImpl implements DaoUser {
     }
 
     @Override
-    public Optional<User> FindUserByTelegramId(String telegramId) {
+    public Optional<User> findUserByTelegramId(String telegramId) {
         final String sql = "SELECT * FROM service.users as usr\n" +
                 "join service.roles as rl\n" +
                 "on usr.role_fk=rl.r_id\n" +
@@ -116,15 +116,18 @@ public class DaoUserImpl implements DaoUser {
     }
 
     @Override
-    public boolean update(User user) {
+    public boolean update(User user, int id) {
         final String sql = "UPDATE service.users SET login = ?, username = ?, surname = ?," +
                 "telegram_user = ?, telegram_id = ?, phone = ?, role_fk = ?, group_fk = ? WHERE id = ? ";
-        return false;
+
+        return jdbcTemplate.update(sql, user.getLogin(), user.getUsername(), user.getSurname(),
+                user.getTelegramUser(), user.getTelegramId(), user.getPhone(), user.getRole().getR_id(),
+                user.getGroup().getG_id(), id) > 0;
     }
 
     @Override
     public boolean deleteUserById(int id) {
         final String sql = "DELETE FROM service.users WHERE id = ?";
-        return false;
+        return jdbcTemplate.update(sql, id) > 0;
     }
 }

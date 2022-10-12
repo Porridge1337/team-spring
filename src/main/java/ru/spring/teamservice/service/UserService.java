@@ -1,15 +1,13 @@
-package ru.spring.teamservice.dao;
+package ru.spring.teamservice.service;
 
 import ru.spring.teamservice.model.User;
 
 import java.util.List;
 import java.util.Optional;
 
+public interface UserService {
 
-public interface DaoUser {
-
-
-    List<User> findAll();
+    List<User> findAllUsers();
 
     List<User> findUsersByRole(String roleName);
 

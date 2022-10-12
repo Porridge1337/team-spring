@@ -1,11 +1,10 @@
-package ru.spring.teamservice.dao;
+package ru.spring.teamservice.service;
 
 import ru.spring.teamservice.model.Group;
 
 import java.util.List;
 
-
-public interface DaoGroup {
+public interface GroupService {
 
     List<Group> findAllGroups();
 
