@@ -1,28 +1,32 @@
 package ru.spring.teamservice.configuration;
 
+import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.sql.DataSource;
+import java.io.IOException;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 @Configuration
-@EnableWebMvc
 @ComponentScan("ru.spring.teamservice")
 @PropertySource("classpath:database.properties")
-public class SpringConfig implements WebMvcConfigurer {
+@EnableAspectJAutoProxy
+public class AppConfig {
 
     private final Environment environment;
 
     @Autowired
-    public SpringConfig(Environment environment) {
+    public AppConfig(Environment environment) {
         this.environment = environment;
     }
 
@@ -41,4 +45,11 @@ public class SpringConfig implements WebMvcConfigurer {
         return new JdbcTemplate(dataSource());
     }
 
+    @Bean
+    @Scope("prototype")
+    public Logger logger(InjectionPoint injectionPoint) throws IOException {
+        LogManager.getLogManager().readConfiguration(getClass().getClassLoader().
+                getResourceAsStream("logger.properties"));
+        return Logger.getLogger(injectionPoint.getMethodParameter().getContainingClass().getName());
+    }
 }
